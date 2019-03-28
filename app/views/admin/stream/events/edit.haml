@@ -1,0 +1,10 @@
+= render partial: 'admin/stream/shared/top_navigation', locals: { page: :edit }
+
+.panel.panel-default
+  = render partial: 'admin/stream/shared/panel_heading', locals: { heading: 'Edytuj' }
+  .panel-body
+    .container
+      .news-container
+        .row
+          .col-sm-12
+            = render 'form'

@@ -1,0 +1,10 @@
+.panel-body.text-center
+  %br
+  .col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+    = form_for [:admin, @event], url: { action: :create }, method: :post, html: { class: 'form-vertical' } do |f|
+      - if resource.eql?(:links)
+        .form-group
+          = f.submit 'Zapisz', class: 'btn btn-success'
+      = render 'admin/stream/shared/import_form', f: f, resource: resource
+      .form-group
+        = f.submit 'Zapisz', class: 'btn btn-success'

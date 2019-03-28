@@ -1,0 +1,109 @@
+- if @event.errors.any?
+  .alert.alert-danger
+    %p.strong Errors:
+    %ul
+      - @event.errors.full_messages.each do |message|
+        %li= message
+
+= form_for [:admin, @event], html: { id: 'stream-event-form', class: 'form-horizontal' } do |f|
+  .row
+    .col-md-6
+      .form-group
+        = f.label :name, class: 'col-md-4 control-label', for: 'stream_event_name'
+        .col-md-8
+          = f.text_field :name, class: 'form-control', placeholder: 'Nazwa wydarzenia Stream'
+
+      .form-group
+        = f.label :starting, class: 'col-md-4 control-label', for: 'stream_event_starting'
+        .col-md-8
+          = f.text_field :starting, class: 'form-control datetimepicker', placeholder: 'Daty i czas startu streamingu', value: f.object.starting&.strftime('%d/%m/%Y %H:%M')
+
+      .form-group
+        = f.label :finishing, class: 'col-md-4 control-label', for: 'stream_event_finishing'
+        .col-md-8
+          = f.text_field :finishing, class: 'form-control datetimepicker', placeholder: 'Daty i czas konca streamingu', value: f.object.finishing&.strftime('%d/%m/%Y %H:%M')
+
+      .form-group
+        = f.label :place, class: 'col-md-4 control-label', for: 'stream_event_name'
+        .col-md-8
+          = f.text_field :place, class: 'form-control', placeholder: 'Miejsce odbywania sie konferencji'
+
+      .form-group
+        = f.label :education_points, class: 'col-md-4 control-label', for: 'stream_event_name'
+        .col-md-8
+          = f.text_field :education_points, class: 'form-control', placeholder: 'Liczba punktow edukacyjnych'
+
+      .form-group
+        = f.label :show_popup, class: 'col-md-4 control-label', for: 'stream_event_show_popup'
+        .col-md-8
+          = f.check_box :show_popup, class: 'form-control'
+
+      .form-group
+        = f.label :popup_time, class: 'col-md-4 control-label', for: 'stream_event_popup_time'
+        .col-md-8
+          = f.number_field :popup_time, class: 'form-control', min: 3, max: 999
+          %span.help-block Po którym czasie pokazać popup. Może być w granicach 3-999 minut
+    .col-md-6
+      %h5.text-center Przerwy
+      .stream_event_breaks
+        - breaks = f.object.breaks.empty? ? [{'starting' => '', 'finishing' => ''}] : f.object.breaks
+        - breaks.each do |br|
+          .break
+            .col-sm-11
+              .col-sm-6
+                = text_field_tag 'stream_event[breaks][][starting]', br.fetch('starting').to_datetime&.strftime('%d/%m/%Y %H:%M'), class: 'form-control datetimepicker', placeholder: 'Start'
+              .col-sm-6
+                = text_field_tag 'stream_event[breaks][][finishing]', br.fetch('finishing').to_datetime&.strftime('%d/%m/%Y %H:%M'), class: 'form-control datetimepicker', placeholder: 'Koniec'
+            = link_to '#', class: 'remove-break col-sm-1', style: 'color: red; padding-top: 10px' do
+              = fa_icon 'times lg'
+      .clearfix
+      %hr
+      .text-center
+        = link_to 'Dodaj', '#', class: 'add-break-button'
+  %br
+  %hr
+  %br
+  .row
+    .col-md-12
+      .form-group
+        = f.label :agenda, class: 'col-md-2 control-label', for: 'stream_event_name'
+        .col-md-10
+          = f.text_area :agenda, id: 'agenda-content-editor'
+
+      .form-group
+        = f.label :brochure, class: 'col-md-2 control-label', for: 'stream_event_name'
+        .col-md-10
+          = f.file_field :brochure
+          - if @event.brochure.exists?
+            %p= @event.brochure.original_filename
+
+      .form-group
+        = f.label :congress_image, class: 'col-md-2 control-label', for: 'stream_event_name'
+        .col-md-10
+          = f.file_field :congress_image
+          - if @event.congress_image.exists?
+            = image_tag @event.congress_image, class: 'img-responsive'
+
+      .form-group
+        = f.label :congress_logo, class: 'col-md-2 control-label', for: 'stream_event_name'
+        .col-md-10
+          = f.file_field :congress_logo
+          - if @event.congress_logo.exists?
+            = image_tag @event.congress_logo, class: 'img-responsive'
+
+      .form-group
+        = f.label :info_color, class: 'col-md-2 control-label', for: 'stream_event_name'
+        .col-md-10
+          = f.text_field :info_color, placeholder: '#4e5297'
+
+      .clearfix
+      %br
+      .form-group
+        = f.submit class: 'btn btn-primary btn-lg submit-button'
+        .text-right
+          - if @event.persisted?
+            = link_to t('stream_events.destroy'),
+                            admin_stream_event_path(@event),
+                            method: :delete,
+                            data: { confirm: t('stream_events.are_you_sure') },
+                            class: 'btn btn-xs btn-danger'

@@ -1,0 +1,39 @@
+= render partial: 'admin/stream/shared/top_navigation', locals: { page: :users }
+
+.panel.panel-default
+  = render partial: 'admin/stream/shared/panel_heading', locals: { heading: 'Import użytkowników' }
+
+  .panel-body.text-center
+    %br
+    .row
+      .col-md-6.col-md-offset-3.well
+        = form_tag review_admin_stream_event_stream_import_users_path(@event), method: :post, multipart: true do |f|
+          .form-group
+            %h4 Plik CSV muśi być w formacie UTF-8, rozdzielony średnikami i miec nagłówki
+            %br
+            .text-left
+              %ul
+                %li Plik muśi zawierac następne nagłówki: <code>ID_KLIENTA;NAZWA;MIASTO;WOJEWODZTWO;telefon___1;e_mail____1</code>
+                %li Szukanie odbywa się przez <b>email</b>. Jeżeli email się zmienił, stary kontakt zostanie zawieszony, nowy stworzony
+                %li Jeżeli klient został znaleziony, będą zaktualizowane następne pola: imię, nazwisko, telefon, miasto, województwo oraz perdix id
+                %li Pod czas importu każdy znależony klient będzie zaznaczony jako zaimportowany z csv(nawet jeżeli wczesniej był dodany ręcznie)
+                %li Klienci, którzy wczesniej byli zaznaczeni jako zaimportowani z csv i nie będą znależieni w kolejnym imporcie zostaną zawieszone(nie będą mieli możliwośći oglądania transmisiji)
+                %li Dla każdego nowego klienta będzie przypisany dostępny link
+                %li Żeby nie dokonywać zmian nalezy usunuć znależony kontakt przez krzyżyk
+            %br
+          .form-group
+            = label_tag :file_input, 'CSV plik', class: 'col-md-2'
+            .col-md-10
+              = file_field_tag :file_input
+          - if @error
+            .form-group
+              .col-md-12
+                .alert.alert-danger
+                  = @error
+                  %br
+                  = link_to 'Zaimport linki', new_admin_stream_event_stream_import_link_path(@event)
+          %br
+          %br
+          %br
+          .form-group
+            = submit_tag 'Kontynuj', class: "btn btn-success"

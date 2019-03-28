@@ -1,0 +1,34 @@
+= access_fields.hidden_field :id
+= access_fields.hidden_field :action, value: '', class: 'access-action'
+- user = access_fields.object
+%tr{class: (user.removed_at ? 'danger' : nil)}
+  %td
+    .show-when-paid-status
+      = access_fields.check_box :checked
+  %td
+    - if user.imported_from_csv
+      = fa_icon 'refresh'
+    - if user.working_in_mt
+      %span.badge Pracownik MT
+    = link_to edit_admin_stream_event_stream_access_path(@event, user) do
+      = ([user.full_name] + user.notes).join('<br>').html_safe
+
+  %td= user.email
+  %td= user.mobile_phone
+  %td
+  %td
+    .show-when-paid-status
+      = "#{user.test_result.to_i}%" if user.test_result
+    .show-when-test-result.form-group-sm{ style: 'max-width: 100px' }
+      .input-group
+        = access_fields.number_field :test_result, value: user.test_result.to_i.eql?(0) ? nil : user.test_result, class: 'form-control', disabled: true
+        .input-group-addon %
+  %td= Stream::Access.human_enum_name(:paid_status, user.paid_status).sub('Nie zapłacono', 'Nie').sub('Zapłacono', 'Tak')
+  %td.action-link
+    = link_to 'skopiuj link', user.access_link, class: 'btn btn-sm copy-link', data: { copy: user.access_link, text: 'skopiowano' }
+  %td.text-center.action-link
+    = link_to edit_admin_stream_event_stream_access_path(@event, user), class: 'btn btn-warning btn-sm' do
+      = fa_icon 'pencil lg'
+  %td.text-center.action-link
+    = link_to admin_stream_event_stream_access_path(@event, user), method: :delete, class: 'btn btn-danger btn-sm', data: { confirm: t('stream_events.are_you_sure') } do
+      = fa_icon "trash lg"

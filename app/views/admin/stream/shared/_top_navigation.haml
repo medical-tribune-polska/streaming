@@ -1,0 +1,14 @@
+%h3
+  = link_to 'Wydarzenia', admin_stream_events_path
+  \/
+  Wydarzenie "#{@event.name}"
+= link_to admin_stream_events_path do
+  %span.glyphicon.glyphicon-menu-left
+  Do listy wydarzeń
+%hr
+
+%ul.nav.nav-pills
+  - active_class = -> action { page.eql?(action) ? 'active' : nil }
+  %li{class: active_class.(:stat)}= link_to 'Statystyki', admin_stream_event_path(@event)
+  %li{class: active_class.(:edit)}= link_to 'Edytuj', edit_admin_stream_event_path(@event)
+  %li{class: active_class.(:users)}= link_to 'Użytkownicy', admin_stream_event_stream_accesses_path(@event)

@@ -1,0 +1,45 @@
+= render partial: 'admin/stream/shared/top_navigation', locals: { page: :users }
+
+.panel.panel-default.accesses-index
+  = render partial: 'admin/stream/shared/panel_heading', locals: { heading: 'Użytkownicy' }
+  .panel-body
+    - if @accesses.any?
+      .pull-right
+        = button_tag 'Przełącz na tryb zmiany wyników testu', class: 'btn btn-sm btn-warning', id: 'access-form-bulk-select-action', data: { action: 'change_paid_status' }
+      = form_for [:admin, @event], html: { id: 'stream-accesses-form', class: 'form-horizontal' } do |f|
+        %table.table.table-hover.table-responsive.table-condensed{style: 'margin-top: 10px'}
+          %thead
+            %th
+            %th= sort_link(@q, :full_name, %i(first_name last_name), 'Nazwa')
+            %th= sort_link(@q, :email)
+            %th= sort_link(@q, :mobile_phone, ' Telefon')
+            %th Kwalifikuje się do testu
+            %th= sort_link(@q, :test_result, 'Liczba procent z testu')
+            %th= sort_link(@q, :paid_status, 'Zapłacił')
+            %th Stream
+            %th Edycja
+            %th Usuń
+          %tbody
+            = f.fields_for :accesses, @accesses do |access_fields|
+              = render 'access_field', access_fields: access_fields
+
+        .show-when-test-result.form-group
+          .pull-right
+            = submit_tag 'Zaktualizuj wyniki testu', class: 'btn btn-success btn-sm'
+        .show-when-paid-status.form-group
+          .pull-right
+            %span{ style: 'margin-right: 20px'}
+              Ustaw status płatnośći na zaznaczonych użytkownikach jako:
+            - Stream::Access.paid_statuses.keys.zip(%w[nie\ opłacony opłacony proforma]).to_h.each do |action, label|
+              = submit_tag label, class: 'btn btn-success btn-sm submit_paid_status', data: { action: action }
+    - else
+      - if @event.accesses.any?
+        .row.text-center
+          %h4 Dodaj użytkowników do wydarzenia
+          %p
+            = link_to 'Dodaj', new_admin_stream_event_stream_access_path(@event), class: 'btn btn-sm btn-success'
+            = link_to 'Import użytkowników', new_admin_stream_event_stream_import_user_path(@event), class: 'btn btn-sm btn-info'
+      - else
+        .row.text-center
+          %h4 Nie ma żadnych linków
+          %p= link_to 'Zaimportuj linki', new_admin_stream_event_stream_import_link_path(@event), class: 'btn btn-sm btn-info'

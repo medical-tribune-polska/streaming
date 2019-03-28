@@ -1,0 +1,8 @@
+.panel-heading
+  = "#{heading} (użytkowników: #{@event_accesses}, dost. linków: #{@event_free_accesses})"
+
+  - if controller_name.in?(%w[accesses])
+    .pull-right
+      = link_to 'Dodaj', new_admin_stream_event_stream_access_path(@event), class: 'btn btn-sm btn-success'
+      = link_to 'Import linków', new_admin_stream_event_stream_import_link_path(@event), class: 'btn btn-sm btn-info'
+      = link_to 'Import użytkowników', new_admin_stream_event_stream_import_user_path(@event), class: 'btn btn-sm btn-info'

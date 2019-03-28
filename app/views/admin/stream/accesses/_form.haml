@@ -1,0 +1,112 @@
+- if @access.errors.any?
+  .alert.alert-danger
+    %p.strong Errors:
+    %ul
+      - @access.errors.full_messages.each do |message|
+        %li= message
+.well
+  = form_for [:admin, @event, @access], html: { id: 'stream-event-form', class: 'form-horizontal' } do |f|
+    %fieldset
+      %legend= @access.full_name
+
+      .form-group
+        = f.label 'Imię', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_first_name'
+        .col-md-9.col-sm-9
+          = f.text_field :first_name, class: 'form-control', placeholder: 'Jan'
+      .form-group
+        = f.label 'Nazwisko', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_last_name'
+        .col-md-9.col-sm-9
+          = f.text_field :last_name, class: 'form-control', placeholder: 'Kowalski'
+      .form-group
+        = f.label 'Email', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_email'
+        .col-md-9.col-sm-9
+          = f.text_field :email, class: 'form-control', placeholder: 'jan.kowalski@email.com'
+      .form-group
+        = f.label 'Telefon', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_mobile_phone'
+        .col-md-9.col-sm-9
+          = f.text_field :mobile_phone, class: 'form-control', placeholder: '+49 9438 52 53'
+      %hr
+
+      .form-group
+        = f.label :city, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_city'
+        .col-md-9.col-sm-9
+          = f.text_field :city, class: 'form-control', placeholder: 'Warszawa'
+
+      .form-group
+        = f.label :voivodeship, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_voivodeship'
+        .col-md-9.col-sm-9
+          = f.text_field :voivodeship, class: 'form-control', placeholder: 'Lubelskie'
+
+      .form-group
+        = f.label :perdix_id, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_perdix_id'
+        .col-md-9.col-sm-9
+          = f.text_field :perdix_id, class: 'form-control', placeholder: '35684'
+
+      .form-group
+        = f.label 'Status płatnośći', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_paid_status'
+        .col-md-9.col-sm-9
+          = f.select :paid_status, options_for_select(Stream::Access.paid_status_attributes_for_select, @access.paid_status), {}, class: 'form-control'
+          %span.help-block
+            %ul
+              %li <b>Zapłacono</b> - uczestnik zapłacił i jego płatność została zaksięgowana na koncie M-T. <b>Możemy wysłać link</b>
+              %li <b>Nie zapłacono</b> - uczestnik nie zapłacił przez co <b>nie możemy mu wysłać linka</b>. Jedyny wyjątek to zakup przelewem dzień przed i w trakcie transmisji, <b>wtedy takim klientom wysyłamy linki</b>
+              %li <b>Proforma</b> - faktura wystawiona na firmę farmaceutyczną która ma dłuższy ok 100dni okres płatności. Uczestnikom zapisanym przez firmy farmaceutyczne zawsze możemy wysłać link mimo że faktura nie jest zapłacona.
+              %li <b>Uczestnik kongresu (nie przeksięgowany)</b> - osoba która najczęściej miała wykupiony dostęp przez firmę farmaceutyczną ale nie może wziąć fizycznie udziału w transmisji. M-T może nie móc skorygować faktury, wtedy takiej osobie przesyłamy link ale nie liczymy jej jako uczestnika który fizycznie zapłacił.
+
+      .form-group
+        = f.label 'Wynik z testów', class: 'col-md-3 col-sm-3 control-label', for: 'stream_access_test_result'
+        .col-md-9.col-sm-9
+          .input-group
+            = f.text_field :test_result, class: 'form-control', placeholder: '50'
+            .input-group-addon %
+
+      %hr
+      .form-group
+        = f.label 'Stream link', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_stream_link'
+        .col-md-9.col-sm-9
+          = text_field_tag :stream_link, f.object.access_link, class: 'form-control absolute-input', disabled: true
+      .form-group
+        = f.label :iframe_link, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_iframe_link'
+        .col-md-9.col-sm-9
+          = f.text_field :iframe_link, class: 'form-control', placeholder: 'Iframe link', disabled: true
+      .form-group
+        = f.label :stream_user, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_stream_user'
+        .col-md-9.col-sm-9
+          = f.text_field :stream_user, class: 'form-control', placeholder: 'Stream User email', disabled: true
+      %hr
+        .text-center
+          - if f.object.imported_from_csv
+            = fa_icon 'refresh', text: 'Zaimportowano przez csv (Zsynchronizowany z importem csv)'
+          - else
+            Dodany ręcznie (Nie bedzie zsynchronizowany z importem csv)
+        .form-group
+          = f.label 'Synchronizować', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_imported_from_csv'
+          .col-md-9.col-sm-9
+            = f.check_box :imported_from_csv, class: 'form-control'
+        .form-group
+          = f.label 'Pracownik MT', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_working_in_mt'
+          .col-md-9.col-sm-9
+            = f.check_box :working_in_mt, class: 'form-control'
+      %hr
+      .form-group
+        = f.label :notes, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_notes'
+        .col-md-8.col-sm-8
+          .stream_access_notes
+            - notes = f.object.notes.any? ? f.object.notes : ['']
+            - notes.each do |note|
+              .note
+                .col-sm-11
+                  = text_field_tag 'stream_access[notes][]', note, class: 'form-control', placeholder: 'Notatka'
+                = link_to '#', class: 'remove-me col-sm-1', style: 'color: red; padding-top: 10px' do
+                  = fa_icon 'times lg'
+          .clearfix
+          = link_to 'Dodaj', '#', class: 'add-note-button'
+      %hr
+    .form-group.pull-left
+      = f.submit class: 'btn btn-primary btn-lg submit-button'
+      - if @access.persisted?
+        .pull-right
+          = link_to (@access.removed_at ? 'Wznów dostęp' : 'Zawieś dostęp'), switch_removed_admin_stream_event_stream_access_path(@event, @access), method: :post, class: 'btn btn-warning submit-button'
+          = link_to 'Usuń', admin_stream_event_stream_access_path(@event, @access), method: :delete, class: 'btn btn-danger button-margin absolute-input submit-button', data: { confirm: t('stream_events.are_you_sure') }
+
+  .clearfix

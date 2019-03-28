@@ -1,0 +1,37 @@
+%br
+.news
+  %p.pull-right
+    = link_to new_admin_stream_event_path, class: 'btn btn-success' do
+      %span.glyphicon.glyphicon-plus
+      Dodaj wydarzenie Stream
+
+  .clearfix
+
+  %h3= "Wydarzenia Stream (#{Stream::Event.count})"
+
+  %table.table.table-hover
+    %thead
+      %th Nazwa
+      %th Data stworzenia
+      %th Dostępów
+      %th Export (bez pracowników MT)
+      %th
+      %th
+    %tbody
+      - @events.each do |event|
+        %tr
+          %td= event.name&.html_safe
+          %td= event.created_at.to_formatted_s(:db)
+          %td #{event.accesses.having_email.count} / #{event.accesses.count}
+          %td
+            - %w[csv xlsx].each do |format|
+              = link_to admin_stream_event_export_accesses_path(event, format: format) , class: 'btn btn-xs btn-info' do
+                = fa_icon 'file-text', text: format
+              &nbsp;
+          %td
+            = link_to(edit_admin_stream_event_path(event), class: 'btn btn-xs btn-warning') do
+              = fa_icon 'pencil', text: 'Edytuj'
+          %td
+            = link_to(admin_stream_event_stream_accesses_path(event), class: 'btn btn-xs btn-primary') do
+              = fa_icon 'users', text: 'Użytkownicy'
+  %p= paginate @events
