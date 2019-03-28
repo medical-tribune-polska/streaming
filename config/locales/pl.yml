@@ -1,0 +1,29 @@
+pl:
+  activerecord:
+    attributes:
+      stream/event:
+        name: Nazwa
+        starting: Początek
+        finishing: Koniec
+        breaks: Przerwy
+        settings: Ustawienia
+        info_color: Kolor info
+        place: Miejsce
+      stream/access:
+        city: Miasto
+        voivodeship: Województwo
+        notes: Notatki
+        paid_status: Status płatnośći
+        paid_statuses:
+          not_paid: Nie zapłacono
+          paid: Zapłacono
+          proform: Proforma
+          participant: Uczestnik kongresu
+  stream_events:
+    new: Utwórz
+    destroy: Usuń Event
+    created: Event został stworzony
+    updated: Event został zaktualizowany
+    destroyed: Event został usunięty
+    back: Wstecz
+    are_you_sure: Czy jesteś pewien? Akcja jest nieodwracalna

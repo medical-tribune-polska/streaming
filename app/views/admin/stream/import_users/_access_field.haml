@@ -1,0 +1,68 @@
+- user_status = (access.id.in?(@existing_users) ? (access.removed_at ? :removed : :updated) : :created)
+- old_attr = -> attr { return unless user_status.eql?(:updated); c = Stream::Access.find(access.id).public_send(attr); "Poprzednia zawartość: #{c}" if c != access.public_send(attr) }
+.well{data: {id: i}, class: "item-will-be-#{user_status}"}
+  .row
+    - if form_group_classes(@errors, i, :base).present?
+      .alert.alert-danger.pull-left{role: "alert"}= @errors[i][:base].join('<br>')
+    .pull-right.remove-access-row
+      = link_to fa_icon('times', class: 'fa-2x'), 'javascript:void(0)', class: 'remove-access'
+
+    .form-group
+      = f.hidden_field :id, value: access.id
+      = f.hidden_field :imported_from_csv, value: access.imported_from_csv
+      = f.hidden_field :removed_at, value: access.removed_at
+
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :first_name)}
+      = f.label :first_name, 'Imię', class: 'control-label col-sm-3'
+      .col-sm-9
+        = f.text_field :first_name, value: access.first_name, placeholder: 'Katarzyna', class: 'form-control input-sm'
+        = old_attr.(:first_name)
+        = error_messages(@errors, i, :first_name)
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :last_name)}
+      = f.label :last_name, 'Nazwisko', class: 'control-label col-sm-3'
+      .col-sm-9
+        = f.text_field :last_name, value: access.last_name, placeholder: 'Wilk', class: 'form-control input-sm'
+        = old_attr.(:last_name)
+        = error_messages(@errors, i, :last_name)
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :email)}
+      = f.label :email, 'Email', class: 'control-label col-sm-3'
+      .col-sm-9
+        = f.text_field :email, value: access.email, placeholder: 'example@gmail.com', class: 'form-control input-sm'
+        = old_attr.(:email)
+        = error_messages(@errors, i, :email)
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :mobile_phone)}
+      = f.label :mobile_phone, 'Telefon', class: 'control-label col-sm-3'
+      .col-sm-9
+        = f.text_field :mobile_phone, value: access.mobile_phone, placeholder: '502250345', class: 'form-control input-sm'
+        = old_attr.(:first_name)
+        = error_messages(@errors, i, :mobile_phone)
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :city)}
+      = f.label :city, 'Miasto', class: 'control-label col-sm-3'
+      .col-sm-9
+        = f.text_field :city, value: access.city, placeholder: 'Warszawa', class: 'form-control input-sm'
+        = old_attr.(:city)
+        = error_messages(@errors, i, :city)
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :voivodeship)}
+      = f.label :voivodeship, 'Wojewódstwo', class: 'control-label col-sm-3'
+      .col-sm-9
+        = f.text_field :voivodeship, value: access.voivodeship, placeholder: 'Mazowieckie', class: 'form-control input-sm'
+        = old_attr.(:voivodeship)
+        = error_messages(@errors, i, :voivodeship)
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :perdix_id, required: true)}
+      = f.label :perdix_id, 'Perdix id', class: 'control-label col-sm-3'
+      .col-sm-9
+        = f.text_field :perdix_id, value: access.perdix_id, placeholder: '123456', class: 'form-control input-sm'
+        = old_attr.(:perdix_id)
+        = error_messages(@errors, i, :perdix_id)
+  .row
+    %br
+    %p
+      Użytkownik zostanie
+      = { created: 'stworzony', updated: 'zaktualizowany', removed: 'zawieszony' }[user_status]

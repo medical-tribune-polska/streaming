@@ -1,0 +1,22 @@
+.well{data: {id: i}}
+  .row
+    - if form_group_classes(@errors, i, :base).present?
+      .alert.alert-danger.pull-left{role: "alert"}= @errors[i][:base].join('<br>')
+    .pull-right.remove-access-row
+      = link_to fa_icon('times', class: 'fa-2x'), 'javascript:void(0)', class: 'remove-access'
+
+    .form-group
+      = f.hidden_field :id, value: access.id
+
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :stream_user, required: true)}
+      = f.label :stream_user, 'Stream user', class: 'control-label col-md-2'
+      .col-md-10
+        = f.text_field :stream_user, value: access.stream_user, placeholder: 'stest1@gosc.pl', class: 'form-control input-sm'
+        = error_messages(@errors, i, :stream_user)
+  .row
+    .form-group{class: form_group_classes_joined(@errors, i, :iframe_link, required: true)}
+      = f.label :iframe_link, 'Iframe link', class: 'control-label col-md-2'
+      .col-md-10
+        = f.text_field :iframe_link, value: access.iframe_link, placeholder: 'https://event.webcaster.pl/h/3434', class: 'form-control input-sm'
+        = error_messages(@errors, i, :iframe_link)

@@ -1,0 +1,19 @@
+- accesses = @event.accesses.select { |r| r.email.present? && r.new_record? && r.imported_from_csv } if resource.eql?(:users)
+- accesses = @event.accesses.select(&:new_record?) if resource.eql?(:links)
+
+.row.accesses-review
+  .col-sm-12.accesses-list
+    - if @event.errors.any?
+      %h3.text-danger Popraw blędy
+
+    - if resource.eql?(:users)
+      - count_changes = accesses.each_with_object({created: 0, updated: 0, removed: 0}) do |access, object|
+        - user_status = (access.id.in?(@existing_users) ? (access.removed_at ? :removed : :updated) : :created)
+        - object[user_status] += 1
+      - statuses_translation = { created: 'stworzone', updated: 'zaktualizowane', removed: 'usunięte' }
+      %p
+        = statuses_translation.map { |key, translation| "#{count_changes[key]} zostanie(ą) #{translation}" if count_changes[key] > 0 }.compact.join(', ')
+
+    - accesses.each_with_index do |access, i|
+      = f.fields_for :accesses, access do |access_field|
+        = render "admin/stream/import_#{resource}/access_field", { f: access_field, access: access, i: i }

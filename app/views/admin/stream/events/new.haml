@@ -1,0 +1,14 @@
+.container
+  .news-container
+    .row
+      .col-sm-12
+        %h1 Nowe wydarzenie Stream
+
+        %p
+          = link_to admin_stream_events_path do
+            %span.glyphicon.glyphicon-menu-left
+            = t 'stream_events.back'
+
+        %hr
+
+        = render 'form'

@@ -1,0 +1,16 @@
+= render partial: 'admin/stream/shared/top_navigation', locals: { page: :users }
+
+.panel.panel-default
+  .panel.panel-default
+    = render partial: 'admin/stream/shared/panel_heading', locals: { heading: 'Użytkownicy' }
+  .panel-body
+    .container
+      .news-container
+        .row
+          .col-sm-12
+            %h3.text-center
+              Nie ma dostępnych linków.
+              = link_to 'Zaimportuj', new_admin_stream_event_stream_import_link_path(@event)
+
+            - 3.times do
+              %br

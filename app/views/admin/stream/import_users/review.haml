@@ -1,0 +1,5 @@
+= render partial: 'admin/stream/shared/top_navigation', locals: { page: :users }
+
+.panel.panel-default
+  = render partial: 'admin/stream/shared/panel_heading', locals: { heading: 'Import użykowników' }
+  = render partial: 'admin/stream/shared/review_form', locals: { resource: :users }

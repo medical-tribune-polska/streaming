@@ -1,0 +1,18 @@
+%html
+  %head
+    %title magwet.pl - Streaming
+    = stylesheet_link_tag    'streaming/admin/stream', media: 'all'
+    = javascript_include_tag 'streaming/stream'
+    = csrf_meta_tags
+    = render partial: 'shared/favicon'
+
+  %body
+    = render partial: 'shared/admin_header'
+    .container
+      .news-container.stream-container
+        .main-content
+          - if flash[:notice]
+            .alert.alert-info= flash[:notice].html_safe
+          - if flash[:success]
+            .alert.alert-success= flash[:success].html_safe
+          = yield

@@ -1,0 +1,51 @@
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
+@import 'bootstrap-datetimepicker';
+@import 'select2';
+@import 'select2-bootstrap';
+@import 'font-awesome';
+
+@import 'stream/form';
+@import 'summernote';
+
+.container {
+  width: 95%;
+}
+
+#stream-event-form {
+  .form-group {
+    width: 100%;
+
+    .submit-button {
+      margin: 0 1em;
+    }
+
+    input[type="checkbox"] {
+      margin: 0;
+      border: 0;
+      box-shadow: none
+    }
+  }
+}
+
+#stream-accesses-form {
+  .show-when-test-result {
+    display: none
+  }
+}
+
+.accesses-index {
+  &.panel {
+    .panel-body {
+      padding-top: 8px;
+
+      form.button_to {
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+
+.action-link .btn-sm {
+  padding: 5px
+}
