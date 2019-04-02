@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+MtWeb::Engine.add_routes do
   namespace :stream, defaults: { magazine_code: 'mw' } do
     resources :analytics, only: :create
     resources :accesses, path: '', param: :slug, only: :show
