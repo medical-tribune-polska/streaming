@@ -8,6 +8,11 @@ module Admin
 
       def review
         file = params['file_input']
+        unless File.extname(file.original_filename).eql?('.csv')
+          flash[:danger] = 'Nieprawidłowy format pliku. Musi być <b>csv</b>.'
+          redirect_to :back and return
+        end
+
         create_object = import_service.new(file)
         review_callback(create_object)
         create_object.call(@event)
