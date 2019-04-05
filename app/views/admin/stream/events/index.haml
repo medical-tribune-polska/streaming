@@ -20,7 +20,7 @@
     %tbody
       - @events.each do |event|
         %tr
-          %td= event.name&.html_safe
+          %td= link_to event.name&.html_safe, admin_stream_event_path(event)
           %td= event.created_at.to_formatted_s(:db)
           %td #{event.accesses.having_email.count} / #{event.accesses.count}
           %td
