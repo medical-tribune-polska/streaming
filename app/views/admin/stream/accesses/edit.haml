@@ -13,6 +13,18 @@
             .row
               .col-md-6
                 .row
+                  .col-sm-12
+                    %table.table
+                      %tbody
+                        %tr
+                          %td Całkowity czas oglądania(bez przerw)
+                          %td= @access.watched_minutes
+                        %tr
+                          %td Kwalifikuje się do testu
+                          %td= @access.kwalifukuje_sie_to_testu
+                %br
+                %br
+                .row
                   .col-sm-12.col-md-8.col-md-offset-4
                     .text-right
                       = form_for :statistics, url: edit_admin_stream_event_stream_access_path(@event, @access), method: :get do |f|

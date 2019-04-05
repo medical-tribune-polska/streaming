@@ -7,7 +7,7 @@ module Admin
       before_action :count_accesses
 
       def index
-        @q = @event.accesses.having_email.order(id: :desc).ransack(params[:q])
+        @q = @event.accesses.includes(:event).having_email.order(id: :desc).ransack(params[:q])
 
         @accesses = @q.result
       end
@@ -51,6 +51,12 @@ module Admin
       def switch_removed
         @access.removed_at ? @access.update(removed_at: nil) : @access.touch(:removed_at)
         redirect_to admin_stream_event_stream_accesses_path(@event)
+      end
+
+      def recount_watched_minutes
+        ::RecountWatchedMinutesJob.perform_later(params[:event_id])
+        flash[:notice] = 'Statystyki dla użytkowników będą przeliczone w ciągu 5 minut'
+        redirect_to :back and return
       end
 
       private

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :events do
         resources :accesses, as: :stream_accesses do
           post :switch_removed, on: :member
+          get :recount_watched_minutes, on: :collection
         end
         resources :import_links, as: :stream_import_links, only: [:new, :create] do
           post :review, on: :collection

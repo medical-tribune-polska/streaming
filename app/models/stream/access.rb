@@ -6,6 +6,8 @@ class Stream::Access < Stream::Base
     mobile_phone
     access_link
     human_paid_status
+    kwalifukuje_sie_to_testu
+    watched_minutes
   ].freeze
   attr_accessor :checked
 
@@ -60,6 +62,26 @@ class Stream::Access < Stream::Base
     loop do
       self.slug = SecureRandom.hex(3)
       break unless Stream::Access.where(slug: slug).exists?
+    end
+  end
+
+  def kwalifukuje_sie_to_testu
+    if watched_minutes.present?
+      watched_minutes >= minimum_watched_minutes_to_process_test ? 'Tak' : 'Nie'
+    end
+  end
+
+  private
+
+  def minimum_watched_minutes_to_process_test
+    event_duration_in_days.eql?(1) ? 120 : 240
+  end
+
+  def event_duration_in_days
+    if event.finishing && event.starting
+      (event.finishing.to_datetime - event.starting.to_datetime).to_i
+    else
+      1
     end
   end
 end
