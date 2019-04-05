@@ -24,24 +24,23 @@
                   = icon 'star'
                   = @stream_event.education_points
 
-.container
-  .row
-    .col
-      %p.text-right= link_to 'Masz pytania w kwestii transmisji? Sprawdź nasze FAQ', '#faq'
-  .row
-    .stream-window
-      - if @stream_access.iframe_link.present?
-        %iframe{ src: @stream_access.iframe_link, frameborder: 0, scrolling: 'no', id: 'iframe-window' }
-          Twoja przegladarka nie obsluguje iframe, skontaktuj sie z administratorem serwisu
-      .stream-modal
-        %p.modal-title Czy ogladąsz transmisję?
-        %p Kliknij kontynuuj, jeżeli oglądasz transmisje. W przeciwnym wypadku transmisja zostanie zatrzymana po 2 minutach.
-        .stream-continue-button
-          KONTYNUUJ TRANSMISJĘ
-        %p.stream-rules
-          Dłuższe zatrzymanie transmisji może skutkować otrzymaniem mniejszej ilości punktów edukacyjnych po zakończeniu kursu. Szczegóły w
-          = link_to 'regulaminie', 'https://magwet.pl/uploads/regulamin-wet19/Regulamin_Transmisja_Online_Weterynaria_2019.pdf', target: '_blank', rel: 'noopener noreferrer'
-          \.
+.row
+  .col
+    %p.text-right= link_to 'Masz pytania w kwestii transmisji? Sprawdź nasze FAQ', '#faq'
+.row
+  .stream-window
+    - if @stream_access.iframe_link.present?
+      %iframe{ src: @stream_access.iframe_link, frameborder: 0, scrolling: 'no', id: 'iframe-window' }
+        Twoja przegladarka nie obsluguje iframe, skontaktuj sie z administratorem serwisu
+    .stream-modal
+      %p.modal-title Czy ogladąsz transmisję?
+      %p Kliknij kontynuuj, jeżeli oglądasz transmisje. W przeciwnym wypadku transmisja zostanie zatrzymana po 2 minutach.
+      .stream-continue-button
+        KONTYNUUJ TRANSMISJĘ
+      %p.stream-rules
+        Dłuższe zatrzymanie transmisji może skutkować otrzymaniem mniejszej ilości punktów edukacyjnych po zakończeniu kursu. Szczegóły w
+        = link_to 'regulaminie', 'https://magwet.pl/uploads/regulamin-wet19/Regulamin_Transmisja_Online_Weterynaria_2019.pdf', target: '_blank', rel: 'noopener noreferrer'
+        \.
 
 :javascript
   var show_popup = #{@stream_event.show_popup};
