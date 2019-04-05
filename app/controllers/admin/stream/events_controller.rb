@@ -122,6 +122,7 @@ module Admin
             :congress_logo,
             :info_color,
             :popup_time,
+            :regulamin_link,
             accesses_attributes: [
               :id,
               :paid_status,

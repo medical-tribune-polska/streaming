@@ -96,6 +96,11 @@
         .col-md-10
           = f.text_field :info_color, placeholder: '#4e5297'
 
+      .form-group
+        = f.label :regulamin_link, class: 'col-md-2 control-label', for: 'stream_event_regulamin_link'
+        .col-md-10
+          = f.text_field :regulamin_link, class: 'form-control', placeholder: 'https://podyplomie.pl/regulamin'
+
       .clearfix
       %br
       .form-group

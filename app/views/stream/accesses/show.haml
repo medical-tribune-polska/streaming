@@ -111,11 +111,12 @@
           (czyli nie można oglądać transmisji z takiego linku na więcej niż na jednym urządzeniu w jednej chwili).
           %strong Zabronione
           jest udostępnianie unikalnych linków do usługi transmisji osobom niezarejestrowanym.
-        %p.collapse-list__p
-          %strong
-            Więcej szczegółów w
-            = link_to 'regulaminie', 'https://magwet.pl/uploads/regulamin-wet19/Regulamin_Transmisja_Online_Weterynaria_2019.pdf', target: '_blank', rel: 'noopener noreferrer'
-            \.
+        - if @stream_event.regulamin_link.present?
+          %p.collapse-list__p
+            %strong
+              Więcej szczegółów w
+              = link_to 'regulaminie', @stream_event.regulamin_link, target: '_blank', rel: 'noopener noreferrer'
+              \.
         .row
           .col-md-3
             .h2.collapse-list__p Numer do infolinii
@@ -124,3 +125,4 @@
               801 044 415
               %br
               +48 (22) 444 24 44
+%br
