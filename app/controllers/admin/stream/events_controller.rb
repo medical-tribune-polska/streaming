@@ -10,9 +10,13 @@ module Admin
       end
 
       def show
-        stat = ::Stream::Statistics.new(@event.id).call(statistics_params)
+        if @event.starting.present?
+          stat = Rails.cache.fetch(params_cache_key(statistics_params), expires_in: 10.minutes) do
+            ::Stream::Statistics.new(@event.id).call(statistics_params)
+          end
 
-        @data, @options = ::Stream::ChartJs.new(stat).generate_data
+          @data, @options = ::Stream::ChartJs.new(stat).generate_data
+        end
       end
 
       def new; end
@@ -33,6 +37,7 @@ module Admin
       def update
         if @event.update(event_params)
           flash[:notice] = I18n.t('stream_events.updated')
+          Rails.cache.delete(params_cache_key(statistics_params))
           if event_params.key?(:accesses_attributes)
             redirect_to admin_stream_event_stream_accesses_path(@event)
           else
@@ -80,7 +85,16 @@ module Admin
       private
 
         def respond_with_csv
-          send_data CsvGenerator.new(collection_to_export).perform!, filename: export_filename(ext: 'csv')
+          attributes = ::Stream::Access::CSV_ATTRIBUTES
+          data = CSV.generate(headers: true, col_sep: ';') do |csv|
+            csv << attributes
+
+            collection_to_export.each do |record|
+              csv << attributes.map { |attr| record.public_send(attr) }
+            end
+          end
+
+          send_data data, filename: export_filename(ext: 'csv')
         end
 
         def collection_to_export
@@ -88,7 +102,7 @@ module Admin
         end
 
         def export_filename(ext: 'csv')
-          "streaming-magwet-#{normalized_event_name(@event)}-#{Time.now.to_i}.#{ext}"
+          "streaming-#{Rails.application.class.parent_name}-#{normalized_event_name(@event)}-#{Time.now.to_i}.#{ext}"
         end
 
         def normalized_event_name(event)

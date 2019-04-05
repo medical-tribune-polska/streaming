@@ -49,6 +49,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'bootstrap-sass'
   spec.add_dependency 'sass-rails'
   spec.add_dependency 'sass'
+  spec.add_dependency 'dalli'
 
   spec.add_development_dependency 'pg', '~> 0.18'
   spec.add_development_dependency 'paperclip'
@@ -72,4 +73,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'sass-rails'
   spec.add_development_dependency 'sass'
   spec.add_development_dependency 'web-console'
+  spec.add_development_dependency 'dalli'
 end

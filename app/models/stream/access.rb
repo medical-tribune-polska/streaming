@@ -19,7 +19,7 @@ class Stream::Access < Stream::Base
   scope :having_empty_email, -> { where(email: nil) }
   scope :imported_from_csv, -> { where(imported_from_csv: true) }
 
-  belongs_to :event, class_name: 'Stream::Event', foreign_key: 'stream_event_id'
+  belongs_to :event, class_name: 'Stream::Event', foreign_key: 'stream_event_id', touch: true
   has_many :analytics, class_name:  'Stream::Analytic',
                        foreign_key: 'stream_access_id',
                        dependent:   :destroy

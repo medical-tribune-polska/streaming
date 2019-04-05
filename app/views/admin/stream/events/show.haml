@@ -13,18 +13,23 @@
                 %h3
                   Online:
                   %span#currently_online{ data: { url: admin_stream_event_currently_online_path(@event) } }
-            .row
-              .col-sm-12.col-md-6.col-md-offset-6
-                .text-right
-                  = form_for :statistics, url: admin_stream_event_path(@event), method: :get do |f|
-                    .col-sm-3
-                      - start = (params.dig(:statistics, :start)&.to_datetime || @event.starting || 1.day.ago).strftime('%d/%m/%Y %H:%M')
-                      = f.text_field :start, value: start, class: 'form-control datetimepicker input-sm'
-                    .col-sm-3
-                      = f.select :hours, options_for_select((1..9).map { |h| [distance_of_time_in_words(h.hours), h] }, params.dig(:statistics, :hours) || 5), {}, class: 'form-control input-sm'
-                    .col-sm-3
-                      = f.select :with_mt_users, options_for_select([['Wszyscy', 'all'], ['Bez pracowników MT', 'without_mt']], params.dig(:statistics, :with_mt_users)), {}, class: 'form-control input-sm'
-                    .col-sm-1
-                      = f.submit 'Wyślij', class: 'btn btn-primary btn-sm'
-            %div{style: 'height: 650px; position: relative'}
-              = line_chart @data, @options
+            - if @event.starting.present?
+              .row
+                .col-sm-12.col-md-6.col-md-offset-6
+                  .text-right
+                    = form_for :statistics, url: admin_stream_event_path(@event), method: :get do |f|
+                      .col-sm-3
+                        - start = (params.dig(:statistics, :start)&.to_datetime || @event.starting || 1.day.ago).strftime('%d/%m/%Y %H:%M')
+                        = f.text_field :start, value: start, class: 'form-control datetimepicker input-sm'
+                      .col-sm-3
+                        = f.select :hours, options_for_select((1..9).map { |h| [distance_of_time_in_words(h.hours), h] }, params.dig(:statistics, :hours) || 5), {}, class: 'form-control input-sm'
+                      .col-sm-3
+                        = f.select :with_mt_users, options_for_select([['Wszyscy', 'all'], ['Bez pracowników MT', 'without_mt']], params.dig(:statistics, :with_mt_users)), {}, class: 'form-control input-sm'
+                      .col-sm-1
+                        = f.submit 'Wyślij', class: 'btn btn-primary btn-sm'
+              %div{style: 'height: 650px; position: relative'}
+                = line_chart @data, @options
+            - else
+              Uzupewni początek wydarzenia, żeby zobaczyć wykres
+              %br
+              %br

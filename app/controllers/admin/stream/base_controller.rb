@@ -1,6 +1,16 @@
 module Admin
   module Stream
     class BaseController < ::BaseController
+      protected
+
+      def params_cache_key(params)
+        params.transform_keys(&:to_s)
+                         .transform_values { |v| v.is_a?(Array) ? v.sort : v }
+                         .sort_by { |k, _| k }.each_with_object('') do |(k, v), cache_key|
+          cache_key << "#{k}:#{v}"
+        end
+      end
+
       private
 
         def count_accesses
