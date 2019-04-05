@@ -15,6 +15,9 @@ module Admin
 
         def count_accesses
           @event_accesses = @event.accesses.having_email.count
+          @paid_event_accesses = @event.accesses.having_email.paid.count
+          @not_paid_event_accesses = @event.accesses.having_email.not_paid.count
+          @mt_event_accesses = @event.accesses.having_email.where(working_in_mt: true).count
           @event_free_accesses = @event.accesses.having_empty_email.count
         end
     end

@@ -1,5 +1,5 @@
 .panel-heading
-  = "#{heading} (użytkowników: #{@event_accesses}, dost. linków: #{@event_free_accesses})"
+  = "#{heading} (użytkowników: #{@event_accesses}, dost. linków: #{@event_free_accesses}, zapłacili: #{@paid_event_accesses}, nie zapłacili: #{@not_paid_event_accesses}, pracowników mt: #{@mt_event_accesses})"
 
   - if controller_name.in?(%w[accesses])
     .pull-right
