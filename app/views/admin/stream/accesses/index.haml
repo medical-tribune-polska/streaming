@@ -30,7 +30,7 @@
           .pull-right
             %span{ style: 'margin-right: 20px'}
               Ustaw status płatnośći na zaznaczonych użytkownikach jako:
-            - Stream::Access.paid_statuses.keys.zip(%w[nie\ opłacony opłacony proforma]).to_h.each do |action, label|
+            - Stream::Access.paid_statuses.keys.zip(%w[Nie\ opłacony Opłacony Proforma Uczestnik\ kongresu]).to_h.each do |action, label|
               = submit_tag label, class: 'btn btn-success btn-sm submit_paid_status', data: { action: action }
     - else
       - if @event.accesses.any?
