@@ -71,6 +71,12 @@ module Admin
         end
       end
 
+      def currently_online
+        @event = ::Stream::Event.find(params[:event_id])
+
+        render json: { online: @event.analytics.online }, status: :ok
+      end
+
       private
 
         def respond_with_csv

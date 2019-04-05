@@ -4,4 +4,5 @@ class Stream::Analytic < Stream::Base
 
   scope :without_mt_users, -> (cond) { includes(:access).where(stream_accesses: {working_in_mt: false}) if cond }
   scope :for_access, -> (id = nil) { where(stream_access_id: id) if id }
+  scope :online, -> { where('watched_at > ?', 1.minute.ago).distinct.count(:stream_access_id) }
 end

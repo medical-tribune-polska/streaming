@@ -18,6 +18,7 @@ Rails.application.routes.draw do
         end
 
         get :export_accesses, defaults: { format: 'csv' }
+        get :currently_online
       end
     end
   end

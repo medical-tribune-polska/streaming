@@ -9,6 +9,11 @@
           .col-sm-12
             %h1 Statystyki
             .row
+              .col-md-3
+                %h3
+                  Online:
+                  %span#currently_online{ data: { url: admin_stream_event_currently_online_path(@event) } }
+            .row
               .col-sm-12.col-md-6.col-md-offset-6
                 .text-right
                   = form_for :statistics, url: admin_stream_event_path(@event), method: :get do |f|

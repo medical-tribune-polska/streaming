@@ -8,6 +8,7 @@
 
 //= require streaming/form
 //= require streaming/timer
+//= require streaming/count_online
 
 function copyToClipboard (str) {
    var el = document.createElement('textarea');
