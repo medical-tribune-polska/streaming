@@ -1,131 +1,132 @@
-.section.section_rel.pb-0.mb-5
-  %img.section__bg-image{ src: @stream_event.congress_image }
-  .section__content
-    .container
-      .row
-        .col
-          %p.mb-4.mt-2
-            %img.img-fluid{ src: @stream_event.congress_logo }
-    .section{ style: "background: #{@stream_event.info_color};" }
+.stream_accesses
+  .section.section_rel.pb-0.mb-5
+    %img.section__bg-image{ src: @stream_event.congress_image }
+    .section__content
       .container
         .row
           .col
-            %ul.list-inline
-              - if stream_date(@stream_event).present?
-                %li.list-inline-item
-                  = icon 'calendar'
-                  = stream_date(@stream_event)
-              - if @stream_event.place.present?
-                %li.list-inline-item
-                  = fa_icon 'map-marker', class: 'fa-lg'
-                  = @stream_event.place
-              - if @stream_event.education_points.present?
-                %li.list-inline-item
-                  = icon 'star'
-                  = @stream_event.education_points
-.container-fluid{style: 'max-width: 90%'}
-  .row
-    .col
-      .d-flex.justify-content-between
-        - if @stream_event.regulamin_link.present?
-          = link_to 'Wymagania techniczne i regulamin transmisji', @stream_event.regulamin_link
-        = link_to 'Masz pytania w kwestii transmisji? Sprawdź nasze FAQ', '#faq'
-  .row
-    .stream-window
-      - if @stream_access.iframe_link.present?
-        %iframe{ src: @stream_access.iframe_link, frameborder: 0, scrolling: 'no', id: 'iframe-window' }
-          Twoja przegladarka nie obsluguje iframe, skontaktuj sie z administratorem serwisu
-      .stream-modal
-        %p.modal-title Czy ogladąsz transmisję?
-        %p Kliknij kontynuuj, jeżeli oglądasz transmisje. W przeciwnym wypadku transmisja zostanie zatrzymana po 2 minutach.
-        .stream-continue-button
-          KONTYNUUJ TRANSMISJĘ
-        - if @stream_event.regulamin_link.present?
-          %p.stream-rules
-            Dłuższe zatrzymanie transmisji może skutkować otrzymaniem mniejszej ilości punktów edukacyjnych po zakończeniu kursu. Szczegóły w
-            = link_to 'regulaminie', @stream_event.regulamin_link, target: '_blank', rel: 'noopener noreferrer'
-            \.
+            %p.mb-4.mt-2
+              %img.img-fluid{ src: @stream_event.congress_logo }
+      .section{ style: "background: #{@stream_event.info_color};" }
+        .container
+          .row
+            .col
+              %ul.list-inline
+                - if stream_date(@stream_event).present?
+                  %li.list-inline-item
+                    = icon 'calendar'
+                    = stream_date(@stream_event)
+                - if @stream_event.place.present?
+                  %li.list-inline-item
+                    = fa_icon 'map-marker', class: 'fa-lg'
+                    = @stream_event.place
+                - if @stream_event.education_points.present?
+                  %li.list-inline-item
+                    = icon 'star'
+                    = @stream_event.education_points
+  .container-fluid{style: 'max-width: 90%'}
+    .row
+      .col
+        .d-flex.justify-content-between
+          - if @stream_event.regulamin_link.present?
+            = link_to 'Wymagania techniczne i regulamin transmisji', @stream_event.regulamin_link
+          = link_to 'Masz pytania w kwestii transmisji? Sprawdź nasze FAQ', '#faq'
+    .row
+      .stream-window
+        - if @stream_access.iframe_link.present?
+          %iframe{ src: @stream_access.iframe_link, frameborder: 0, scrolling: 'no', id: 'iframe-window' }
+            Twoja przegladarka nie obsluguje iframe, skontaktuj sie z administratorem serwisu
+        .stream-modal
+          %p.modal-title Czy ogladąsz transmisję?
+          %p Kliknij kontynuuj, jeżeli oglądasz transmisje. W przeciwnym wypadku transmisja zostanie zatrzymana po 2 minutach.
+          .stream-continue-button
+            KONTYNUUJ TRANSMISJĘ
+          - if @stream_event.regulamin_link.present?
+            %p.stream-rules
+              Dłuższe zatrzymanie transmisji może skutkować otrzymaniem mniejszej ilości punktów edukacyjnych po zakończeniu kursu. Szczegóły w
+              = link_to 'regulaminie', @stream_event.regulamin_link, target: '_blank', rel: 'noopener noreferrer'
+              \.
 
-:javascript
-  var show_popup = #{@stream_event.show_popup};
-  var popup_time = #{@stream_event.popup_time};
-  var access_id = #{@stream_access.id};
-  var event_id = #{@stream_event.id};
+  :javascript
+    var show_popup = #{@stream_event.show_popup};
+    var popup_time = #{@stream_event.popup_time};
+    var access_id = #{@stream_access.id};
+    var event_id = #{@stream_event.id};
 
-- if @stream_event.brochure.exists?
+  - if @stream_event.brochure.exists?
+    .container
+      .row
+        .col
+          %p.text-right
+            = link_to @stream_event.brochure.url, target: '_blank' do
+              = fa_icon 'download', text: 'Pobierz materiały kongresowe', class: 'fa-lg'
+
   .container
     .row
       .col
-        %p.text-right
-          = link_to @stream_event.brochure.url, target: '_blank' do
-            = fa_icon 'download', text: 'Pobierz materiały kongresowe', class: 'fa-lg'
+        .stream-agenda
+          %b AGENDA
+          = @stream_event.agenda&.html_safe
 
-.container
-  .row
-    .col
-      .stream-agenda
-        %b AGENDA
-        = @stream_event.agenda&.html_safe
+  .container
+    .row
+      .col
+        .collapse-list.mb-1
+          .collapse-list__header#faq FAQ
 
-.container
-  .row
-    .col
-      .collapse-list.mb-1
-        .collapse-list__header#faq FAQ
+          .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_1' } }
+            %p Czy do oglądania jest potrzebne logowanie?
+          .collapse-list__collapse.collapse#faq_1
+            %p
+              Do oglądania transmisji nie jest wymagane logowanie, każdy użytkownik, który zakupił dostęp
+              %strong otrzyma unikalny link,
+              który umożliwia obejrzenie transmisji.
 
-        .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_1' } }
-          %p Czy do oglądania jest potrzebne logowanie?
-        .collapse-list__collapse.collapse#faq_1
-          %p
-            Do oglądania transmisji nie jest wymagane logowanie, każdy użytkownik, który zakupił dostęp
-            %strong otrzyma unikalny link,
-            który umożliwia obejrzenie transmisji.
+          .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_2' } }
+            %p Czy można zatrzymać transmisję?
+          .collapse-list__collapse.collapse#faq_2
+            %p Transmisja może być zatrzymana. Ze względu na to, że transmisja jest na żywo, nie można wznowić jej od chwili zatrzymania.
 
-        .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_2' } }
-          %p Czy można zatrzymać transmisję?
-        .collapse-list__collapse.collapse#faq_2
-          %p Transmisja może być zatrzymana. Ze względu na to, że transmisja jest na żywo, nie można wznowić jej od chwili zatrzymania.
-
-        .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_3' } }
-          %p Czy po odbytej transmisji można ją ponownie odtworzyć?
-        .collapse-list__collapse.collapse#faq_3
-          %p
-            Transmisja jest nadawana na żywo i po jej zakończeniu
-            %strong  nie będzie można jej ponownie odtworzyć
-            \.
-          %p
-            Każdy uczestnik transmisji otrzyma dostęp do zmontowanych filmów z kongresu na swoim koncie na serwisie
-            = link_to root_url.gsub(/(http(s)*:\/\/|www\.)/, '').sub('pl/', 'pl').prepend('www.'), root_url, target: '_blank', rel: 'noopener noreferrer'
-            \.
-
-        .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_5' } }
-          %p Jeżeli przy próbie uruchomienia transmisji pojawi się taki komunikat.
-        .collapse-list__collapse.collapse#faq_5
-          %p
-            = image_tag 'stream/for_regulamin.png', class: 'img-fluid'
-          %p
-            %strong
-              Prosimy o sprawdzenie:
-          %ul
-            %li czy link do transmisji nie jest otwarty w innej karcie przeglądarki, w innej przeglądarce czy na innym urządzeniu (również smartfonie czy tablecie).
-        %p.collapse-list__p
-          Na stronie zastosowaliśmy systemy bezpieczeństwa, aby każdy użytkownik mógł otrzymać swój unikalny link do transmisji. Unikalny link umożliwia oglądanie transmisji
-          %strong tylko na jednym urządzeniu w danym momencie
-          (czyli nie można oglądać transmisji z takiego linku na więcej niż na jednym urządzeniu w jednej chwili).
-          %strong Zabronione
-          jest udostępnianie unikalnych linków do usługi transmisji osobom niezarejestrowanym.
-        - if @stream_event.regulamin_link.present?
-          %p.collapse-list__p
-            %strong
-              Więcej szczegółów w
-              = link_to 'regulaminie', @stream_event.regulamin_link, target: '_blank', rel: 'noopener noreferrer'
+          .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_3' } }
+            %p Czy po odbytej transmisji można ją ponownie odtworzyć?
+          .collapse-list__collapse.collapse#faq_3
+            %p
+              Transmisja jest nadawana na żywo i po jej zakończeniu
+              %strong  nie będzie można jej ponownie odtworzyć
               \.
-        .row
-          .col-md-3
-            .h2.collapse-list__p Numer do infolinii
-          .col-md-9
-            .h2.collapse-list__p
-              801 044 415
-              %br
-              +48 (22) 444 24 44
-%br
+            %p
+              Każdy uczestnik transmisji otrzyma dostęp do zmontowanych filmów z kongresu na swoim koncie na serwisie
+              = link_to root_url.gsub(/(http(s)*:\/\/|www\.)/, '').sub('pl/', 'pl').prepend('www.'), root_url, target: '_blank', rel: 'noopener noreferrer'
+              \.
+
+          .collapse-list__toggle.collapsed.type{ data: { toggle: 'collapse', target: '#faq_5' } }
+            %p Jeżeli przy próbie uruchomienia transmisji pojawi się taki komunikat.
+          .collapse-list__collapse.collapse#faq_5
+            %p
+              = image_tag 'streaming/for_regulamin.png', class: 'img-fluid'
+            %p
+              %strong
+                Prosimy o sprawdzenie:
+            %ul
+              %li czy link do transmisji nie jest otwarty w innej karcie przeglądarki, w innej przeglądarce czy na innym urządzeniu (również smartfonie czy tablecie).
+          %p.collapse-list__p
+            Na stronie zastosowaliśmy systemy bezpieczeństwa, aby każdy użytkownik mógł otrzymać swój unikalny link do transmisji. Unikalny link umożliwia oglądanie transmisji
+            %strong tylko na jednym urządzeniu w danym momencie
+            (czyli nie można oglądać transmisji z takiego linku na więcej niż na jednym urządzeniu w jednej chwili).
+            %strong Zabronione
+            jest udostępnianie unikalnych linków do usługi transmisji osobom niezarejestrowanym.
+          - if @stream_event.regulamin_link.present?
+            %p.collapse-list__p
+              %strong
+                Więcej szczegółów w
+                = link_to 'regulaminie', @stream_event.regulamin_link, target: '_blank', rel: 'noopener noreferrer'
+                \.
+          .row
+            .col-md-3
+              .h2.collapse-list__p Numer do infolinii
+            .col-md-9
+              .h2.collapse-list__p
+                801 044 415
+                %br
+                +48 (22) 444 24 44
+  %br

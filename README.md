@@ -29,8 +29,7 @@ $ bundle
 Add to `config/initializers/assets.rb`
 ```ruby
 Rails.application.config.assets.precompile += %w[
-  streaming/stream.js
-  streaming/admin/stream.css
+  streaming/*
 ]
 ```
 
