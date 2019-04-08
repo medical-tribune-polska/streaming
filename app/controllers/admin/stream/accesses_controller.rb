@@ -13,9 +13,11 @@ module Admin
       end
 
       def edit
-        stat = ::Stream::Statistics.new(@event.id).call(statistics_params)
+        if @event.starting.present?
+          stat = ::Stream::Statistics.new(@event.id).call(statistics_params)
 
-        @data, @options = ::Stream::ChartJs.new(stat).generate_data
+          @data, @options = ::Stream::ChartJs.new(stat).generate_data
+        end
       end
 
       def update
