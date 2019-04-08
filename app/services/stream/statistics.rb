@@ -1,6 +1,6 @@
 module Stream
   class Statistics
-    DATETIME_FORMAT = '%d.%m.%Y %R'
+    DATETIME_FORMAT = '%d.%m.%Y %R'.freeze
 
     def initialize(event_id)
       @event = Stream::Event.find(event_id)
@@ -10,7 +10,8 @@ module Stream
       @for_access_id = for_access_id
       @without_mt_users = without_mt_users
       array_with_data = []
-      raise RuntimeError, 'Event start is empty' if start.nil?
+      raise 'Event start is empty' if start.nil?
+
       loop do
         start += 1.hour
         array_with_data << count_watcher_for_one_hour(start)
@@ -76,7 +77,7 @@ module Stream
         collection.map do |time, watchers|
           {
             time => {
-              count: watchers,
+              count:    watchers,
               is_break: time.in?(collect_breaks_by_minutes)
             }
           }

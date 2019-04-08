@@ -1,0 +1,23 @@
+AllCops:
+  TargetRubyVersion: 2.3
+  Exclude:
+    - 'spec/dummy/db/schema.rb'
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Layout/IndentationConsistency:
+  EnforcedStyle: rails
+
+Layout/AlignHash:
+  Description: Align the elements of a hash literal if they span more than one line.
+  Enabled: true
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+  EnforcedLastArgumentHashStyle: always_inspect
+
+Metrics/LineLength:
+  Max: 120

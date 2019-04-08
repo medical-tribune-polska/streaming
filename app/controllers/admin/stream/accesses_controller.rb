@@ -30,7 +30,7 @@ module Admin
       end
 
       def new
-        render :no_free_links and return if @access.nil?
+        render(:no_free_links) && return if @access.nil?
       end
 
       def destroy
@@ -58,7 +58,7 @@ module Admin
       def recount_watched_minutes
         ::RecountWatchedMinutesJob.perform_later(params[:event_id])
         flash[:notice] = 'Statystyki dla użytkowników będą przeliczone w ciągu 5 minut'
-        redirect_to :back and return
+        redirect_to(:back) && return
       end
 
       private

@@ -2,19 +2,19 @@ class AddSettingsToStreamEvents < ActiveRecord::Migration
   def up
     add_column :stream_events, :settings, :json, default: {
       education_points: nil,
-      place: nil,
-      info_color: nil,
-      show_popup: true,
-      popup_time: 30
+      place:            nil,
+      info_color:       nil,
+      show_popup:       true,
+      popup_time:       30
     }
 
     Stream::Event.find_each do |event|
       event.update(settings: {
-        education_points: event.education_points,
-        place: event.place,
-        info_color: event.info_color,
-        show_popup: event.show_popup
-      })
+                     education_points: event.education_points,
+                     place:            event.place,
+                     info_color:       event.info_color,
+                     show_popup:       event.show_popup
+                   })
     end
 
     remove_column :stream_events, :education_points
@@ -32,9 +32,9 @@ class AddSettingsToStreamEvents < ActiveRecord::Migration
     Stream::Event.find_each do |event|
       event.update(
         education_points: event.settings['education_points'],
-        place: event.settings['place'],
-        info_color: event.settings['info_color'],
-        show_popup: event.settings['show_popup']
+        place:            event.settings['place'],
+        info_color:       event.settings['info_color'],
+        show_popup:       event.settings['show_popup']
       )
     end
 

@@ -11,10 +11,10 @@ Rails.application.routes.draw do
           post :switch_removed, on: :member
           get :recount_watched_minutes, on: :collection
         end
-        resources :import_links, as: :stream_import_links, only: [:new, :create] do
+        resources :import_links, as: :stream_import_links, only: %i[new create] do
           post :review, on: :collection
         end
-        resources :import_users, as: :stream_import_users, only: [:new, :create] do
+        resources :import_users, as: :stream_import_users, only: %i[new create] do
           post :review, on: :collection
         end
 

@@ -53,9 +53,7 @@ class Stream::Access < Stream::Base
   end
 
   def action=(action)
-    if checked.eql?('1')
-      self.paid_status = action
-    end
+    self.paid_status = action if checked.eql?('1')
   end
 
   def generate_random_slug
@@ -73,15 +71,15 @@ class Stream::Access < Stream::Base
 
   private
 
-  def minimum_watched_minutes_to_process_test
-    event_duration_in_days.eql?(1) ? 120 : 240
-  end
-
-  def event_duration_in_days
-    if event.finishing && event.starting
-      (event.finishing.to_datetime - event.starting.to_datetime).to_i
-    else
-      1
+    def minimum_watched_minutes_to_process_test
+      event_duration_in_days.eql?(1) ? 120 : 240
     end
-  end
+
+    def event_duration_in_days
+      if event.finishing && event.starting
+        (event.finishing.to_datetime - event.starting.to_datetime).to_i
+      else
+        1
+      end
+    end
 end

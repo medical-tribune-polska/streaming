@@ -8,7 +8,7 @@ module Stream
       count_minutes = lambda do |access_id|
         Stream::Statistics.new(@event.id)
                           .call(for_access_id: access_id)
-                          .each_with_object({sum: 0}) do |(_t, h), o|
+                          .each_with_object(sum: 0) do |(_t, h), o|
                             o[:sum] += h[:count] if h[:is_break].eql?(false)
                           end[:sum]
       end

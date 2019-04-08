@@ -10,7 +10,7 @@ module Admin
         file = params['file_input']
         unless File.extname(file.original_filename).eql?('.csv')
           flash[:danger] = 'Nieprawidłowy format pliku. Musi być <b>csv</b>.'
-          redirect_to :back and return
+          redirect_to(:back) && return
         end
 
         create_object = import_service.new(file)
