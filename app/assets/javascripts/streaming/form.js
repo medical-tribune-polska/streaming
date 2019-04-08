@@ -91,4 +91,8 @@ $(document).ready(function(){
     else
       $(ev.target).parent().remove();
   });
+
+  $(document).on('click', '#select_all_accesses', function() {
+    $('.accesses_bulk_update_checkbox').prop('checked', this.checked);
+  })
 });

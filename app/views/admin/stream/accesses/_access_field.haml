@@ -4,7 +4,7 @@
 %tr{class: (user.removed_at ? 'danger' : nil)}
   %td
     .show-when-paid-status
-      = access_fields.check_box :checked
+      = access_fields.check_box :checked, class: 'accesses_bulk_update_checkbox'
   %td
     - if user.imported_from_csv
       = fa_icon 'refresh'

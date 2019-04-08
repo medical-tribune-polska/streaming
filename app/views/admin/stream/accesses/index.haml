@@ -9,7 +9,7 @@
       = form_for [:admin, @event], html: { id: 'stream-accesses-form', class: 'form-horizontal' } do |f|
         %table.table.table-hover.table-responsive.table-condensed{style: 'margin-top: 10px'}
           %thead
-            %th
+            %th= check_box_tag :select_all_accesses
             %th= sort_link(@q, :full_name, %i(first_name last_name), 'Nazwa')
             %th= sort_link(@q, :email)
             %th= sort_link(@q, :mobile_phone, ' Telefon')
