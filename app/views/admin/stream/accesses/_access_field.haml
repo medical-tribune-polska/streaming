@@ -13,7 +13,7 @@
     = link_to edit_admin_stream_event_stream_access_path(@event, user) do
       = ([user.full_name] + user.notes).join('<br>').html_safe
 
-  %td= user.email
+  %td{ class: user.email.include?('@bez-maila.pl') ? 'text-danger' : nil }= user.email
   %td= user.mobile_phone
   %td= user.kwalifukuje_sie_to_testu
   %td

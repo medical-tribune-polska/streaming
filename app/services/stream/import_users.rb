@@ -6,7 +6,7 @@ module Stream
 
     def initialize(file)
       data = open(file)
-      @data = CSV.parse(data, headers: true, col_sep: ';')
+      @data = CSV.parse(data, headers: true, col_sep: ';', encoding: 'utf-8', header_converters: :symbol)
     end
 
     def call(event)
@@ -43,14 +43,15 @@ module Stream
           # user found by email. to set removed_at if user not found in csv
           (@used_users_ids ||= []) << access.id
         end
+
         @event.accesses.build(
-          first_name:   split_names(row).first,
-          last_name:    split_names(row).last,
-          email:        row['e_mail____1'] || 'Nie jest podany!! Wprowadź',
-          mobile_phone: row['telefon_ko1'] || row['telefon_ko2'],
-          city:              cap(row['MIASTO']),
-          voivodeship:       cap(row['WOJEWODZTWO']),
-          perdix_id:         row['ID_KLIENTA'],
+          first_name:        split_names(row).first,
+          last_name:         split_names(row).last,
+          email:             row[:e_mail____1] || fill_blank_email(row),
+          mobile_phone:      row[:telefon_ko1] || row[:telefon_ko2],
+          city:              cap(row[:miasto]),
+          voivodeship:       cap(row[:wojewodztwo]),
+          perdix_id:         row[:id_klienta],
           id:                access.id,
           imported_from_csv: true,
           removed_at:        nil
@@ -58,12 +59,12 @@ module Stream
       end
 
       def find_access(row)
-        event.accesses.find_by(email: row['e_mail____1']) ||
+        event.accesses.where('email = ? OR perdix_id = ?', row[:e_mail____1], row[:id_klienta]).first ||
           event.accesses.having_empty_email.where.not(id: @used_links_ids).first!
       end
 
       def split_names(row)
-        nazwa = cap(row['NAZWA'])
+        nazwa = cap(row[:nazwa])
         splitted = nazwa.split
         case splitted.size
         when 2
@@ -102,12 +103,16 @@ module Stream
       end
 
       def ids_of_existing_users
-        @emails ||= @data.map { |row| row['e_mail____1'] }
+        @emails ||= @data.map { |row| row[:e_mail____1].presence || fill_blank_email(row) }
         @user_ids ||= event.accesses.where(email: @emails).ids
       end
 
       def remove(access)
         event.accesses.build(access.attributes.merge(removed_at: Time.zone.now))
+      end
+
+      def fill_blank_email(row)
+        split_names(row).join(' ').split(' ').map(&:downcase).join('_').concat('@bez-maila.pl')
       end
   end
 end
