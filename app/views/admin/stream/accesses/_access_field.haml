@@ -19,13 +19,16 @@
   %td= user.mobile_phone
   %td= user.kwalifukuje_sie_to_testu
   %td
-    .show-when-paid-status
-      = "#{user.test_result.to_i}%" if user.test_result
-    .show-when-test-result.form-group-sm{ style: 'max-width: 100px' }
-      .input-group
-        = access_fields.number_field :test_result, value: user.test_result.to_i.eql?(0) ? nil : user.test_result, class: 'form-control', disabled: true
-        .input-group-addon %
-  %td= Stream::Access.human_enum_name(:paid_status, user.paid_status).sub('Nie zapłacono', 'Nie').sub('Zapłacono', 'Tak')
+    - unless user.working_in_mt
+      .show-when-paid-status
+        = "#{user.test_result.to_i}%" if user.test_result
+      .show-when-test-result.form-group-sm{ style: 'max-width: 100px' }
+        .input-group
+          = access_fields.number_field :test_result, value: user.test_result.to_i.eql?(0) ? nil : user.test_result, class: 'form-control', disabled: true
+          .input-group-addon %
+  %td
+    - unless user.working_in_mt
+      = Stream::Access.human_enum_name(:paid_status, user.paid_status).sub('Nie zapłacono', 'Nie').sub('Zapłacono', 'Tak')
   %td.action-link
     = link_to 'skopiuj link', user.access_link, class: 'btn btn-sm copy-link', data: { copy: user.access_link, text: 'skopiowano' }
   %td.text-center.action-link
