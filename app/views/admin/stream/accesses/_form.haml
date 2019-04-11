@@ -27,38 +27,40 @@
           = f.text_field :mobile_phone, class: 'form-control', placeholder: '+49 9438 52 53'
       %hr
 
-      .form-group
-        = f.label :city, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_city'
-        .col-md-9.col-sm-9
-          = f.text_field :city, class: 'form-control', placeholder: 'Warszawa'
 
-      .form-group
-        = f.label :voivodeship, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_voivodeship'
-        .col-md-9.col-sm-9
-          = f.text_field :voivodeship, class: 'form-control', placeholder: 'Lubelskie'
+      - if f.object.working_in_mt.eql?(false)
+        .form-group
+          = f.label :city, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_city'
+          .col-md-9.col-sm-9
+            = f.text_field :city, class: 'form-control', placeholder: 'Warszawa'
 
-      .form-group
-        = f.label :perdix_id, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_perdix_id'
-        .col-md-9.col-sm-9
-          = f.text_field :perdix_id, class: 'form-control', placeholder: '35684'
+        .form-group
+          = f.label :voivodeship, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_voivodeship'
+          .col-md-9.col-sm-9
+            = f.text_field :voivodeship, class: 'form-control', placeholder: 'Lubelskie'
 
-      .form-group
-        = f.label 'Status płatnośći', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_paid_status'
-        .col-md-9.col-sm-9
-          = f.select :paid_status, options_for_select(Stream::Access.paid_status_attributes_for_select, @access.paid_status), {}, class: 'form-control'
-          %span.help-block
-            %ul
-              %li <b>Zapłacono</b> - uczestnik zapłacił i jego płatność została zaksięgowana na koncie M-T. <b>Możemy wysłać link</b>
-              %li <b>Nie zapłacono</b> - uczestnik nie zapłacił przez co <b>nie możemy mu wysłać linka</b>. Jedyny wyjątek to zakup przelewem dzień przed i w trakcie transmisji, <b>wtedy takim klientom wysyłamy linki</b>
-              %li <b>Proforma</b> - faktura wystawiona na firmę farmaceutyczną która ma dłuższy ok 100dni okres płatności. Uczestnikom zapisanym przez firmy farmaceutyczne zawsze możemy wysłać link mimo że faktura nie jest zapłacona.
-              %li <b>Uczestnik kongresu (nie przeksięgowany)</b> - osoba która najczęściej miała wykupiony dostęp przez firmę farmaceutyczną ale nie może wziąć fizycznie udziału w transmisji. M-T może nie móc skorygować faktury, wtedy takiej osobie przesyłamy link ale nie liczymy jej jako uczestnika który fizycznie zapłacił.
+        .form-group
+          = f.label :perdix_id, class: 'col-md-3 control-label col-sm-3', for: 'stream_access_perdix_id'
+          .col-md-9.col-sm-9
+            = f.text_field :perdix_id, class: 'form-control', placeholder: '35684'
 
-      .form-group
-        = f.label 'Wynik z testów', class: 'col-md-3 col-sm-3 control-label', for: 'stream_access_test_result'
-        .col-md-9.col-sm-9
-          .input-group
-            = f.text_field :test_result, class: 'form-control', placeholder: '50'
-            .input-group-addon %
+        .form-group
+          = f.label 'Status płatnośći', class: 'col-md-3 control-label col-sm-3', for: 'stream_access_paid_status'
+          .col-md-9.col-sm-9
+            = f.select :paid_status, options_for_select(Stream::Access.paid_status_attributes_for_select, @access.paid_status), {}, class: 'form-control'
+            %span.help-block
+              %ul
+                %li <b>Zapłacono</b> - uczestnik zapłacił i jego płatność została zaksięgowana na koncie M-T. <b>Możemy wysłać link</b>
+                %li <b>Nie zapłacono</b> - uczestnik nie zapłacił przez co <b>nie możemy mu wysłać linka</b>. Jedyny wyjątek to zakup przelewem dzień przed i w trakcie transmisji, <b>wtedy takim klientom wysyłamy linki</b>
+                %li <b>Proforma</b> - faktura wystawiona na firmę farmaceutyczną która ma dłuższy ok 100dni okres płatności. Uczestnikom zapisanym przez firmy farmaceutyczne zawsze możemy wysłać link mimo że faktura nie jest zapłacona.
+                %li <b>Uczestnik kongresu (nie przeksięgowany)</b> - osoba która najczęściej miała wykupiony dostęp przez firmę farmaceutyczną ale nie może wziąć fizycznie udziału w transmisji. M-T może nie móc skorygować faktury, wtedy takiej osobie przesyłamy link ale nie liczymy jej jako uczestnika który fizycznie zapłacił.
+
+        .form-group
+          = f.label 'Wynik z testów', class: 'col-md-3 col-sm-3 control-label', for: 'stream_access_test_result'
+          .col-md-9.col-sm-9
+            .input-group
+              = f.text_field :test_result, class: 'form-control', placeholder: '50'
+              .input-group-addon %
 
       %hr
       .form-group

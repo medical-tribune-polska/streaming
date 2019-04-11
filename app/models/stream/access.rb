@@ -20,6 +20,7 @@ class Stream::Access < Stream::Base
   scope :imported_from_csv, -> { where(imported_from_csv: true) }
   scope :not_removed, -> { where(removed_at: nil) }
   scope :removed, -> { where.not(removed_at: nil) }
+  scope :not_mt, -> { where(working_in_mt: false) }
 
   belongs_to :event, class_name: 'Stream::Event', foreign_key: 'stream_event_id', touch: true
   has_many :analytics, class_name:  'Stream::Analytic',

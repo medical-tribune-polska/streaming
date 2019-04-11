@@ -15,8 +15,8 @@ module Admin
 
         def count_accesses
           @event_accesses = @event.accesses.having_email.not_removed.count
-          @paid_event_accesses = @event.accesses.having_email.paid.not_removed.count
-          @not_paid_event_accesses = @event.accesses.having_email.not_paid.not_removed.count
+          @paid_event_accesses = @event.accesses.having_email.paid.not_removed.not_mt.count
+          @not_paid_event_accesses = @event.accesses.having_email.not_paid.not_removed.not_mt.count
           @mt_event_accesses = @event.accesses.having_email.where(working_in_mt: true).not_removed.count
           @suspended_accesses = @event.accesses.having_email.removed.count
           @event_free_accesses = @event.accesses.having_empty_email.count
