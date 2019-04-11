@@ -7,7 +7,7 @@ module Admin
       before_action :count_accesses
 
       def index
-        @q = @event.accesses.includes(:event).having_email.order(id: :desc).ransack(params[:q])
+        @q = @event.accesses.includes(:event).having_email.order(removed_at: :desc, id: :desc).ransack(params[:q])
 
         @accesses = @q.result
       end

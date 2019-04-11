@@ -18,6 +18,8 @@ class Stream::Access < Stream::Base
   scope :having_email, -> { where.not(email: nil) }
   scope :having_empty_email, -> { where(email: nil) }
   scope :imported_from_csv, -> { where(imported_from_csv: true) }
+  scope :not_removed, -> { where(removed_at: nil) }
+  scope :removed, -> { where.not(removed_at: nil) }
 
   belongs_to :event, class_name: 'Stream::Event', foreign_key: 'stream_event_id', touch: true
   has_many :analytics, class_name:  'Stream::Analytic',

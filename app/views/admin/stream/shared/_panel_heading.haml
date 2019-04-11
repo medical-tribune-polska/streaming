@@ -1,9 +1,12 @@
 .panel-heading
-  = "#{heading} (użytkowników: #{@event_accesses}, dost. linków: #{@event_free_accesses}, zapłacili: #{@paid_event_accesses}, nie zapłacili: #{@not_paid_event_accesses}, pracowników mt: #{@mt_event_accesses})"
-
-  - if controller_name.in?(%w[accesses])
-    .pull-right
-      = link_to 'Przelicz statystyki dla użytkowników', recount_watched_minutes_admin_stream_event_stream_accesses_path(@event), class: 'btn btn-sm btn-info'
-      = link_to 'Dodaj', new_admin_stream_event_stream_access_path(@event), class: 'btn btn-sm btn-success'
-      = link_to 'Import linków', new_admin_stream_event_stream_import_link_path(@event), class: 'btn btn-sm btn-info'
-      = link_to 'Import użytkowników', new_admin_stream_event_stream_import_user_path(@event), class: 'btn btn-sm btn-info'
+  .row
+    .col-lg-6.col-xs-12{ style: 'margin-bottom: 5px' }
+      = "#{heading} (użytkowników: #{@event_accesses}, dost. linków: #{@event_free_accesses}, zapłacili: #{@paid_event_accesses}, nie zapłacili: #{@not_paid_event_accesses}, pracowników mt: #{@mt_event_accesses})"
+      %span.text-danger= "Zawieszonych #{@suspended_accesses}"
+    .col-lg-6.col-xs-12
+      - if controller_name.in?(%w[accesses])
+        .pull-right
+          = link_to 'Przelicz statystyki dla użytkowników', recount_watched_minutes_admin_stream_event_stream_accesses_path(@event), class: 'btn btn-sm btn-info'
+          = link_to 'Dodaj', new_admin_stream_event_stream_access_path(@event), class: 'btn btn-sm btn-success'
+          = link_to 'Import linków', new_admin_stream_event_stream_import_link_path(@event), class: 'btn btn-sm btn-info'
+          = link_to 'Import użytkowników', new_admin_stream_event_stream_import_user_path(@event), class: 'btn btn-sm btn-info'
