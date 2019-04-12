@@ -27,7 +27,7 @@ $(document).ready(function() {
       .catch((err) => console.warn(err))
 
       const data = await resp.json()
-      show_online_block.html(data.online)
+      show_online_block.html(data.online_without_mt + ' / ' + data.online_all)
     } catch (err) {
       console.warn(err)
     }

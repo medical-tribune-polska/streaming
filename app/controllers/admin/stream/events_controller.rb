@@ -79,7 +79,10 @@ module Admin
       def currently_online
         @event = ::Stream::Event.find(params[:event_id])
 
-        render json: { online: @event.analytics.online }, status: :ok
+        render json: {
+          online_without_mt: @event.analytics.without_mt_users(true).online,
+          online_all: @event.analytics.online
+        }, status: :ok
       end
 
       private
