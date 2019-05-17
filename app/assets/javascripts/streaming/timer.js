@@ -1,7 +1,8 @@
 //= require moment
 
 $(document).ready(function(){
-  const iframe_el = $('iframe').attr('src');
+  const iframe_element = $('#streaming-iframe')
+  const iframe_el = iframe_element.attr('src');
   let streamReset = false;
   let anylyticsCountdown;
   const postAnalyticsPeriod = moment.duration(1, "minute").asMilliseconds();
@@ -18,12 +19,12 @@ $(document).ready(function(){
 
   var removeStream = function () {
     if (streamReset) {
-      $('iframe').attr('src', '');
+      iframe_element.attr('src', '');
     }
   }
 
   var createStream = function () {
-    $('iframe').attr('src', iframe_el);
+    iframe_element.attr('src', iframe_el);
   }
 
   var showModal = function () {
@@ -39,7 +40,7 @@ $(document).ready(function(){
   var hideModal = function () {
     $('.stream-modal').css('display', 'none');
     $('.stream-window').removeClass('you-cant-see-me');
-    if (streamReset && $('iframe').attr('src') ==! iframe_el) { createStream() }
+    if (streamReset && iframe_element.attr('src') ==! iframe_el) { createStream() }
     streamReset = false;
     onLoad();
   }
@@ -69,7 +70,7 @@ $(document).ready(function(){
     .catch((err) => console.warn(err))
   }
 
-  if($('.stream_accesses').length > 0) {
+  if(iframe_element.length > 0 && $('.stream_accesses').length > 0) {
     if (show_popup) {
       onLoad();
     } else {
