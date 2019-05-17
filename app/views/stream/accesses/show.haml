@@ -34,7 +34,7 @@
     .row
       .stream-window
         - if @stream_access.iframe_link.present?
-          %iframe{ src: @stream_access.iframe_link, frameborder: 0, scrolling: 'no', id: 'iframe-window' }
+          %iframe{ src: @stream_access.iframe_link, frameborder: 0, scrolling: 'no', id: 'streaming-iframe' }
             Twoja przegladarka nie obsluguje iframe, skontaktuj sie z administratorem serwisu
         .stream-modal
           %p.modal-title Czy ogladąsz transmisję?
@@ -43,7 +43,7 @@
             KONTYNUUJ TRANSMISJĘ
           - if @stream_event.regulamin_link.present?
             %p.stream-rules
-              Dłuższe zatrzymanie transmisji może skutkować otrzymaniem mniejszej ilości punktów edukacyjnych po zakończeniu kursu. Szczegóły w
+              Dłuższe zatrzymanie transmisji może się z wiązać z utraceniem możliwości otrzymania punktów edukacyjnych. Szczegóły w
               = link_to 'regulaminie', @stream_event.regulamin_link, target: '_blank', rel: 'noopener noreferrer'
               \.
 
