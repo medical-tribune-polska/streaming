@@ -16,7 +16,7 @@ $(document).ready(function() {
       throw new TypeError("Oops, no JSON!");
 
     }).then(response => {
-        show_online_block.html(response.online_without_mt + ' / ' + response.online_all);
+        show_online_block.html('Bez pracowników MT: ' + response.online_without_mt + ' / Wszyscy: ' + response.online_all);
 
     }).catch((err) => console.warn(err))
   };

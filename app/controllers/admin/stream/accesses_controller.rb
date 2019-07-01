@@ -13,11 +13,10 @@ module Admin
       end
 
       def edit
-        if @event.starting.present?
-          stat = ::Stream::Statistics.new(@event.id).call(statistics_params)
+        return unless @event.starting.present?
 
-          @data, @options = ::Stream::ChartJs.new(stat).generate_data
-        end
+        stat = ::Stream::Statistics.new(@event.id).call(statistics_params)
+        @data, @options = ::Stream::ChartJs.new(stat).generate_data
       end
 
       def update
@@ -86,7 +85,6 @@ module Admin
             voivodeship
             paid
             perdix_id
-            watched_minutes
             paid_status
             test_result
             working_in_mt

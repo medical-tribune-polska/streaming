@@ -7,7 +7,8 @@ class Stream::Access < Stream::Base
     access_link
     human_paid_status
     kwalifukuje_sie_to_testu
-    watched_minutes
+    all_watched_minutes
+    test_result
   ].freeze
   attr_accessor :checked
 
@@ -30,6 +31,8 @@ class Stream::Access < Stream::Base
   validates :iframe_link, :stream_user, uniqueness: true
 
   before_create :generate_random_slug
+
+  store_accessor :watched_minutes, :all_watched_minutes, :first_day_watched_minutes, :second_day_watched_minutes
 
   def access_link
     return unless slug.present?
@@ -67,8 +70,8 @@ class Stream::Access < Stream::Base
   end
 
   def kwalifukuje_sie_to_testu
-    if watched_minutes.present?
-      watched_minutes >= minimum_watched_minutes_to_process_test ? 'Tak' : 'Nie'
+    if all_watched_minutes.present?
+      all_watched_minutes >= minimum_watched_minutes_to_process_test ? 'Tak' : 'Nie'
     end
   end
 

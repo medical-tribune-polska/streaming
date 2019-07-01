@@ -18,7 +18,13 @@
                       %tbody
                         %tr
                           %td Całkowity czas oglądania(bez przerw)
-                          %td= @access.watched_minutes
+                          %td= @access.all_watched_minutes
+                        %tr
+                          %td Czas oglądania pierwszy dzień(bez przerw)
+                          %td= @access.first_day_watched_minutes
+                        %tr
+                          %td Czas oglądania drugi dzień(bez przerw)
+                          %td= @access.second_day_watched_minutes
                         %tr
                           %td Kwalifikuje się do testu
                           %td= @access.kwalifukuje_sie_to_testu

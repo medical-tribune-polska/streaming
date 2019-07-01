@@ -6,10 +6,11 @@ module Stream
       @event = Stream::Event.find(event_id)
     end
 
-    def call(start: @event.starting - 1.hour, finish: @event.finishing, for_access_id: nil, without_mt_users: false)
+    def call(start: nil, finish: @event.finishing, for_access_id: nil, without_mt_users: false)
       @for_access_id = for_access_id
       @without_mt_users = without_mt_users
       array_with_data = []
+      start = @event.starting ? @event.starting - 1.hour : nil
       raise 'Event start is empty' if start.nil?
 
       loop do
