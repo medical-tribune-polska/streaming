@@ -14,7 +14,7 @@ module Stream
 
       def data
         {
-          labels:   @collection.keys,
+          labels:   normalize_datetime_labels(@collection.keys),
           datasets: [
             {
               label:            'Streaming',
@@ -78,6 +78,12 @@ module Stream
 
       def color_green
         'rgb(75, 192, 192)'
+      end
+
+      def normalize_datetime_labels(collection)
+        warsaw_offset = Time.now.in_time_zone('Warsaw').utc_offset
+
+        collection.map { |k| (k.to_datetime + warsaw_offset.seconds).strftime(Stream::Statistics::DATETIME_FORMAT) }
       end
   end
 end

@@ -81,7 +81,7 @@ module Admin
 
         render json: {
           online_without_mt: @event.analytics.without_mt_users(true).online,
-          online_all: @event.analytics.online
+          online_all:        @event.analytics.online
         }, status: :ok
       end
 
@@ -121,7 +121,11 @@ module Admin
         end
 
         def statistics_params
-          start = params.dig(:statistics, :start)&.to_datetime || @event.starting || 1.day.ago
+          start_datetime = params.dig(:statistics, :start)&.to_datetime
+          warsaw_offset = Time.now.in_time_zone('Warsaw').utc_offset.seconds
+          normalize_start = start_datetime - warsaw_offset - 1.hour if start_datetime
+          start = normalize_start || (@event.starting - warsaw_offset + 1.hour).utc || 1.day.ago
+
           hours = params.dig(:statistics, :hours)&.to_i || 5
           mt = params.dig(:statistics, :without_mt_users) || 'all'
           {}.tap do |o|
@@ -146,14 +150,14 @@ module Admin
             :info_color,
             :popup_time,
             :regulamin_link,
-            accesses_attributes: [
-              :id,
-              :paid_status,
-              :checked,
-              :action,
-              :test_result
+            accesses_attributes: %i[
+              id
+              paid_status
+              checked
+              action
+              test_result
             ],
-            breaks: [:starting, :finishing]
+            breaks:              %i[starting finishing]
           )
         end
     end

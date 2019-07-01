@@ -6,7 +6,7 @@ module Stream
       @event = Stream::Event.find(event_id)
     end
 
-    def call(start: @event.starting, finish: @event.finishing, for_access_id: nil, without_mt_users: false)
+    def call(start: @event.starting - 1.hour, finish: @event.finishing, for_access_id: nil, without_mt_users: false)
       @for_access_id = for_access_id
       @without_mt_users = without_mt_users
       array_with_data = []
@@ -66,6 +66,8 @@ module Stream
 
       def break_in_minute_iteration(start, finish)
         h = []
+        return h if start.nil? || finish.nil?
+
         while start <= finish
           h.push(start.to_datetime.strftime(DATETIME_FORMAT))
           start += 1.minute

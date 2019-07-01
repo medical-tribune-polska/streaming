@@ -34,14 +34,12 @@ module Admin
       end
 
       def destroy
-        new_attributes = ::Stream::Access.new.attributes.except *%w[
-          id
-          stream_event_id
-          iframe_link
-          stream_user
-          created_at
-          updated_at
-        ]
+        new_attributes = ::Stream::Access.new.attributes.except 'id',
+                                                                'stream_event_id',
+                                                                'iframe_link',
+                                                                'stream_user',
+                                                                'created_at',
+                                                                'updated_at'
         @access.assign_attributes @access.attributes.merge(new_attributes)
         @access.generate_random_slug
         @access.save
@@ -93,12 +91,15 @@ module Admin
             test_result
             working_in_mt
             imported_from_csv
-          ] +
-          [notes: []]
+          ] + [notes: []]
         end
 
         def statistics_params
-          start = params.dig(:statistics, :start)&.to_datetime || @event.starting || 1.day.ago
+          start_datetime = params.dig(:statistics, :start)&.to_datetime
+          warsaw_offset = Time.now.in_time_zone('Warsaw').utc_offset.seconds
+          normalize_start = start_datetime - warsaw_offset - 1.hour if start_datetime
+
+          start = normalize_start || (@event.starting - 1.hour).utc || 1.day.ago
           hours = params.dig(:statistics, :hours)&.to_i || 5
           {}.tap do |o|
             o[:start] = start
